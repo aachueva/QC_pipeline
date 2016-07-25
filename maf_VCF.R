@@ -5,7 +5,7 @@
 # These values should be stored in the SNP annotation file for array data. You will need to create a SNP annotation file (data frame)
 # for each chromosome with snp id, chromosome, position, reference allele and alt allele to which you can add allele frequency 
 # and MAF as specified in the next step.
-
+ 
 library(SeqVarTools); sessionInfo()$otherPkgs$SeqVarTools$Version  # "1.9.10"
 library(Biobase); sessionInfo()$otherPkgs$Biobase$Version      # "2.30.0"
 
@@ -32,7 +32,7 @@ print(fileIn)
 vcfGDS<- seqOpen(fileIn)
 
 # loading sample annotation file for vcf
-load(paste0(path_to_vcf_annot_folder,"/vcf.sample.v01.acc.RData"))
+load(paste0(path_to_sample_annot_folder_vcf,"/vcf.sample.v01.RData"))
 
 # Subsetting VCF GDS to only sample for the current study
 seqSetFilter(vcfGDS)
@@ -50,7 +50,7 @@ maf <- ifelse(afreq < 0.5, afreq, 1-afreq)
 head(maf)
 
 var_annotation <- data.frame(variant.id=seqGetData(vcfGDS, "variant.id"), chromosome=seqGetData(vcfGDS, "chromosome"), position=seqGetData(vcfGDS, "position"), afreq, maf)
-save(var_annotation, file=paste0(path_to_vcf_annot_folder,"/vcf_var_annot_maf_af_chr",chr,".RData"))
+save(var_annotation, file=paste0(path_to_sample_annot_folder_vcf,"/vcf_var_annot_maf_af_chr",chr,".RData"))
 
 
 # compute the allele frequency for the reference allele in all 22 VCF gds files and the array fingerprint file.

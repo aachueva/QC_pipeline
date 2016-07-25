@@ -32,7 +32,7 @@ meta    <- data.frame(labelDescription=c("NWD_ID unique scan ID within TOPMed pr
 sample  <- AnnotatedDataFrame(sample,meta)
 names(pData(sample)) <-"sample.id"
 # dir.create(paste0(path_res_folder_dp,"/results"), showWarnings = TRUE, recursive = FALSE, mode = "0777")
-path_ann_df_vcf<- paste0(path_to_sample_annot_folder_vcf,"/vcf.sample.v01.",user,".RData")
+path_ann_df_vcf<- paste0(path_to_sample_annot_folder_vcf,"/vcf.sample.v01.RData")
 
 save(sample,file=path_ann_df_vcf)
 
@@ -40,9 +40,9 @@ save(sample,file=path_ann_df_vcf)
 
 colsToKeep <- c("sample.id","dbgap_subject_id")
 
-pData(sample) <- merge(pData(sample),pdata(annot)[,colsToKeep],by.x="sample.id");
+pData(sample) <- merge(pData(sample),pData(annot)[,colsToKeep],by.x="sample.id");
 
 head(pData(sample))
-path_ann_df_vcf<- paste0(path_to_sample_annot_folder_vcf,"/vcf.sample.v02.",user,".RData")
+path_ann_df_vcf<- paste0(path_to_sample_annot_folder_vcf,"/vcf.sample.v02.RData")
 
 save(sample,file=path_ann_df_vcf)
