@@ -18,7 +18,7 @@ print(chr)
 #------------------------------------------------------
 
 # read array sample table
-sample      <- get(load(paste0(path_to_sample_annot_folder,"/",sample_annotation_file))); dim(sample) # 3305  3
+sample      <- get(load(paste0(path_to_sample_annot_folder_plink,"/",path_to_sample_annot_file_plink))); dim(sample) # 3305  3
 all(sort(sample$scanID)==sample$scanID) 
 # TRUE
 
@@ -28,12 +28,12 @@ head(pData(sample),n=3)
 # 153   PT-3DVH 100189 NWD741479
 # 154   PT-3DVI 100452 NWD291345
 
-library(splitstackshape)
-new<- as.data.frame(cSplit(pData(sample),splitCols="sample.id", sep = "_"))
-pData(sample)<- merge(pData(sample),new,by="scanID")
-sample$sample.id_2 <-NULL
-names(sample) <- c("scanID", "sample.id", "sample.id.org")
-head(pData(sample))
+#library(splitstackshape)
+#new<- as.data.frame(cSplit(pData(sample),splitCols="sample.id", sep = "_"))
+#pData(sample)<- merge(pData(sample),new,by="scanID")
+#sample$sample.id_2 <-NULL
+#names(sample) <- c("scanID", "sample.id", "sample.id.org")
+#head(pData(sample))
 #   scanID 	 sample.id	   sample.id.org
 # 1 102137   PT-31LT_1     PT-31LT
 # 2 104979   PT-31LV_1     PT-31LV
@@ -41,14 +41,26 @@ head(pData(sample))
 # 4 106022   PT-31M2_1     PT-31M2
 # 
 
-save(sample, file=paste0(path_to_sample_annot_folder,"/",study,".sample.v03.",user,".RData"))
-
+#save(sample, file=paste0(path_to_sample_annot_folder,"/",study,".sample.v03.",user,".RData"))
 tmp <- unlist(lapply(pData(sample), function(x) sum(is.na(x)))); tmp[tmp!=0]
 
 
 # open array sGDS file
 arrayGDS    <- seqOpen(path_plink_gds)
 
+
+ref <- refChar(arrayGDS)
+table(ref)
+alt <- altChar(arrayGDS)
+table(alt)
+ keep <- ref %in% c("A","C","G","T")
+ keep_alt <- alt %in% c("A","C","G","T")
+ table(keep)
+ table(keep_alt)
+ seqSetFilter(arrayGDS, variant.sel = keep)
+# of selected variants: 1,661,619
+ seqSetFilter(arrayGDS, variant.sel = keep_alt)
+# of selected variants: 1,869,945
 # excluding alleles that are 0s
 # ref <- refChar(arrayGDS)
 # table(ref)
@@ -63,7 +75,7 @@ arrayData
 #------------------------------------------------------
 
 # read VCF sample table
-vcf <- get(load( paste0(path_to_vcf_annot_folder,"/vcf.sample.v01.",user,".RData"))); dim(vcf) 
+vcf <- get(load( paste0(path_to_sample_annot_folder_vcf,"/vcf.sample.v01.RData"))); dim(vcf) 
 head(pData(vcf),n=3)
 #   sample.id
 # 1 NWD101191
@@ -129,7 +141,7 @@ seqData
 
 # duplicate discordance function
 res <- duplicateDiscordance(seqData, arrayData,
-match.samples.on=c("submitted_subject_id", "sample.id.org"),
+match.samples.on=c("submitted_subject_id", "sample.id"),
 match.variants.on="position", discordance.type="hethom",
 by.variant=FALSE, verbose=TRUE)
 

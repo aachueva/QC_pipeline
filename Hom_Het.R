@@ -32,7 +32,7 @@ dim(final_tmp)
 ###################################################
 
 # read sample table
-sample      <- get(load(paste0(path_to_sample_annot_folder,"/",study,".sample.v03.",user,".RData"))); dim(sample) # 3305  3
+sample<-get(load(paste0(path_to_sample_annot_folder_plink,"/",path_to_sample_annot_file_plink)))
 all(sort(sample$scanID)==sample$scanID) #  TRUE
 head(pData(sample),n=3)
 #    sample.id_1 scanID sample.id    NWD_ID biosample_id
@@ -80,7 +80,7 @@ seqSetFilter(gds)
 # of selected samples: 11401
 # of selected variants: 9997
 
-final_df <- merge(final_tmp, pData(sample), by.x="array.id",by.y="sample.id.org")
+final_df <- merge(final_tmp, pData(sample), by.x="array.id",by.y="sample.id")
 # final_df$NWD.id <- NULL
 
 # Het/Hom rate for 176 samples only:

@@ -15,7 +15,7 @@ rand_n.variants <-0
 
 
 for (chr in 1:22) {
-rand_filein      <- get(load(paste0(path_res_folder_dp, "/RAND_dup_disc_res_chr",chr,".RData"))); 
+rand_filein      <- get(load(paste0(path_res_folder_dp, "/rand_dup_disc_res_chr",chr,".RData"))); 
 dim(rand_filein)
 non_rand_filein <- get(load(paste0(path_res_folder_dp, "/dup_disc_res_chr",chr,".RData"))); 
 dim(non_rand_filein)

@@ -27,7 +27,7 @@ head(pData(sample),n=3)
 
 set.seed(06042016)
 idx <- sample(1:nrow(sample))
-sample$rand.sample.id <- sample$sample.id[idx]
+sample$rand.sample.id <- sample$sample.id_1[idx]
 
 
 

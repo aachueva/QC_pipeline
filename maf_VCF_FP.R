@@ -13,11 +13,11 @@ chr <- args[2]
 print(chr)
 
 #load vcf dataframe with allele freq and maf
-load(paste0(path_to_vcf_annot_folder,"/vcf_var_annot_maf_af_chr",chr,".RData"))
+load(paste0(path_to_sample_annot_folder_vcf,"/vcf_var_annot_maf_af_chr",chr,".RData"))
 dim(var_annotation)
 
 #load array dataframe with allele freq and maf
-load(paste0(path_to_sample_annot_folder,"/maf_FP.aac.RData"))
+load(paste0(path_to_sample_annot_folder_plink,"/maf_FP.aac.RData"))
 dim(var_annotation_fp)
 
 var_annotation_vcf <- var_annotation

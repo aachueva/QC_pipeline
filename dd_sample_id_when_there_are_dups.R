@@ -23,14 +23,6 @@ all(sort(sample$scanID)==sample$scanID)
 # TRUE
 
 head(pData(sample),n=3)
-
-
-set.seed(06042016)
-idx <- sample(1:nrow(sample))
-sample$rand.sample.id <- sample$sample.id[idx]
-
-
-
 #     sample.id scanID    NWD_ID
 # 152   PT-3DVG 100151 NWD977574
 # 153   PT-3DVH 100189 NWD741479
@@ -121,7 +113,7 @@ vcf_sample  <- AnnotatedDataFrame(vcf_sample,meta)
 pData(vcf_sample) <- merge(pData(vcf_sample),telemetry, by.x="sample.id", by.y ="submitted_sample_id",all.x=TRUE)
 
 
-#save(vcf_sample, file=paste0(path_res_folder_dp,'/VCF_NWD_subj_id_mapping.RData'))
+save(vcf_sample, file=paste0(path_res_folder_dp,'/VCF_NWD_subj_id_mapping.RData'))
 
 # So far we have sample annot df for VCF and array data (fingerprint) and we have SNP annot (with allele frequency and maf frerquency)
 # Next step is to run seqSetFilter function to filter those that are MAF < 5% and rerun dup disc function
@@ -149,7 +141,7 @@ seqData
 
 # duplicate discordance function
 res <- duplicateDiscordance(seqData, arrayData,
-match.samples.on=c("submitted_subject_id", "rand.sample.id"),
+match.samples.on=c("submitted_subject_id", "sample.id_1"),
 match.variants.on="position", discordance.type="hethom",
 by.variant=FALSE, verbose=TRUE)
 
@@ -162,7 +154,7 @@ summary(res$n.concordant)
 
 library(GWASTools)
 
-save(res, file=paste0(path_res_folder_dp,'/rand_dup_disc_res_chr',chr,'.RData'))
+save(res, file=paste0(path_res_folder_dp,'/dup_disc_res_chr',chr,'.RData'))
 rm(list=objects())
 
 
